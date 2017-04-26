@@ -1,12 +1,13 @@
 import datetime
 import os
+from app import db
 from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy import (DECIMAL, Boolean, Column, DateTime, Date, ForeignKey, Index,
                         Integer, MetaData, Table, Text, UniqueConstraint,
                         Float, CheckConstraint, event, BigInteger)
 from database import Base
 
-class Result(Base):
+class Result(db.Model):
     __tablename__ = 'results'
     id = Column(Integer, primary_key=True)
     mint_email = Column(Text)

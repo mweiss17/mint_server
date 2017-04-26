@@ -7,9 +7,10 @@ from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 
 
-app =  Flask(__name__)
+app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 db = SQLAlchemy(app)
+import views
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):

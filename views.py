@@ -8,6 +8,7 @@ from rq import Queue
 
 @app.route("/mint")
 def mint():
+    import pdb; pdb.set_trace()
     # get my most recent result
     result = Result.query.order_by(Result.created_date).first()
     print(result.created_date - datetime.datetime.utcnow() )
