@@ -1,21 +1,23 @@
 import models
 from models import Result
 from app import app, db
+from database import db_session
 from flask import Flask
 from pprint import pprint
 from redis import Redis
 from rq import Queue
 
-@app.route("/mint")
-def mint():
-    import pdb; pdb.set_trace()
+@app.route("/mint/<email>")
+def mint(email):
     # get my most recent result
-    result = Result.query.order_by(Result.created_date).first()
-    print(result.created_date - datetime.datetime.utcnow() )
-    if result and datetime.datetime.utcnow() - result.created_date < datetime.timedelta(83600):
+    if not email:
+        return "Please enter an email"
+    import pdb; pdb.set_trace()
+    result = db_session.query(Result).filter_by(mint_email=email).order_by(Result.created_date).first()
+    if not result or datetime.datetime.utcnow() - result.created_date > datetime.timedelta(83600):
         # Enqueue a job
         q = Queue(connection=Redis())
-        q.enqueue(job, result.id)
+        q.enqueue(job, email)
     # if the most recent result is within the last day, return it
     transactions = result.transactions
     budgets = result.budgets
